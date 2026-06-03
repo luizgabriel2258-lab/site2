@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataSphere | Tecnologia de Banco de Dados</title>
+    <style>
+        /* --- Configurações Globais --- */
+        :root {
+            --primary-blue: #0A2540;
+            --accent-blue: #635BFF;
+            --bright-green: #00D4B2;
+            --light-green: #E8F9F5;
+            --pure-white: #FFFFFF;
+            --bg-light: #F8FAFC;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Barra de Navegação --- */
+        header {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--bright-green);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--bright-green);
+        }
+
+        /* --- Seção Hero --- */
+        .hero {
+            padding: 10rem 2rem 6rem 2rem;
+            background: radial-gradient(circle at top right, var(--light-green), transparent 40%),
+                        radial-gradient(circle at bottom left, #E0F2FE, transparent 40%);
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--primary-blue);
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--accent-blue), var(--bright-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2.5rem auto;
+        }
+
+        .cta-btn {
+            background: linear-gradient(135deg, var(--primary-blue), #1e40af);
+            color: var(--pure-white);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(10, 37, 64, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-block;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 178, 0.3);
+        }
+
+        /* --- Seção de Recursos (Cards) --- */
+        .features {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            color: var(--primary-blue);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background-color: var(--bright-green);
+            margin: 10px auto 0 auto;
+            border-radius: 2px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--pure-white);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(10, 37, 64, 0.05);
+            border-top: 4px solid var(--bright-green);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--light-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon svg {
+            stroke: var(--bright-green);
+        }
+
+        .card h3 {
+            font-size: 1.35rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* --- Seção de Conteúdo Técnico --- */
+        .tech-section {
+            background-color: var(--pure-white);
+            padding: 6rem 2rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .tech-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .tech-text {
+            flex: 1;
+            min-wIdth: 300px;
+        }
+
+        .tech-text h2 {
+            font-size: 2.2rem;
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-text p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-visual {
+            flex: 1;
+            min-width: 300px;
+            background: linear-gradient(135deg, #E0F2FE, var(--light-green));
+            padding: 3rem;
+            border-radius: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 20px rgba(255,255,255,0.5);
+        }
+
+        /* Simulação gráfica de DB com CSS */
+        .db-graphic {
+            width: 150px;
+            height: 180px;
+            border: 4px solid var(--primary-blue);
+            border-radius: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 10px;
+            background: white;
+        }
+
+        .db-line {
+            height: 12px;
+            background-color: var(--bright-green);
+            border-radius: 6px;
+            width: 80%;
+            margin: 0 auto;
+        }
+        .db-line:nth-child(2) { width: 60%; background-color: var(--accent-blue);}
+        .db-line:nth-child(3) { width: 75%; }
+
+        /* --- Rodapé --- */
+        footer {
+            background-color: var(--primary-blue);
+            color: var(--pure-white);
+            padding: 4rem 2rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-content p {
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 500px;
+            margin: 1rem auto;
+        }
+
+        .footer-bottom {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- Responsividade --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            nav { display: none; } /* Simplificação para mobile */
+            .tech-container { flex-direction: column-reverse; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00D4B2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5V19A9 3 0 0 0 21 19V5"></path><path d="M3 12A9 3 0 0 0 21 12"></path></svg>
+                Data<span>Sphere</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#conceito">Conceito</a></li>
+                    <li><a href="#arquitetura">Arquitetura</a></li>
+                    <li><a href="#seguranca">Segurança</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>A espinha dorsal da<br><span>Era Digital</span></h1>
+        <p>Sistemas de Banco de Dados modernos transformam dados brutos em inteligência em tempo real, garantindo consistência, velocidade e escala para a sua aplicação.</p>
+        <a href="#conceito" class="cta-btn">Explorar Tecnologia</a>
+    </section>
+
+    <section class="features" id="conceito">
+        <h2 class="section-title">Pilares dos Bancos de Dados</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2px"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
+                <h3>Modelagem Relacional (SQL)</h3>
+                <p>Estruturas robustas baseadas em tabelas, ideais para consistência estrita de dados e transações complexas (ACID).</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                </div>
+                <h3>Flexibilidade NoSQL</h3>
+                <p>Armazenamento não-relacional de alta performance (documentos, grafos, chave-valor) feito para escalar horizontalmente.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+                <h3>Nuvem & Escabilidade</h3>
+                <p>Bancos de dados gerenciados (Database as a Service) que expandem recursos automaticamente sob demanda global.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="tech-section" id="arquitetura">
+        <div class="tech-container">
+            <div class="tech-visual">
+                <div class="db-graphic">
+                    <div class="db-line"></div>
+                    <div class="db-line"></div>
+                    <div class="db-line"></div>
+                </div>
+            </div>
+            <div class="tech-text">
+                <h2>Performance e Indexação</h2>
+                <p>Um banco de dados eficiente não apenas armazena dados, mas sabe como encontrá-los instantaneamente. O uso correto de índices (como árvores B-Tree e tabelas Hash) dita a velocidade das suas consultas.</p>
+                <p>Otimizar queries e entender o plano de execução do SGBD (Sistema Gerenciador de Banco de Dados) separa aplicações lentas de plataformas ultra velozes.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <h3>DataSphere</h3>
+            <p>Construindo o amanhã com a organização de dados de hoje.</p>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 DataSphere. Desenvolvido com foco em performance e design.
+        </div>
+    </footer>
+
+</body>
+</html>
